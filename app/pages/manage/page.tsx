@@ -1,14 +1,14 @@
 import React from "react";
 import Navbar from "@/app/components/Navbar";
 
-const Report = () => {
+const Manage = () => {
   return (
     <div className="flex items-center gap-11 justify-center h-screen w-screen flex-container py-12">
       <Navbar />
       <div className="flex items-center justify-center flex-col gap-10">
         <div className="bg-black w-[1200px] h-[130px] rounded-[15px] flex items-center px-20 gap-3">
           <div className="text-3xl font-medium text-primary">
-            Pending Reports
+            Manage Account
           </div>
           <div className="bg-white flex items-center w-[300px] h-[40px] rounded-xl px-4 gap-2 ms-auto">
             <div>
@@ -62,10 +62,10 @@ const Report = () => {
         </div>
         <div className="bg-softWhite w-[1200px] h-[470px] rounded-[15px] relative p-12">
             <div className="grid grid-cols-5">
-              <div className="text-lg ms-4">Report ID</div>
-              <div className="text-lg">Reported User</div>
-              <div className="text-lg">User Type</div>
-              <div className="text-lg">Violation</div>
+              <div className="text-lg ms-4">User ID</div>
+              <div className="text-lg">Name</div>
+              <div className="text-lg">Verification</div>
+              <div className="text-lg">Active Status</div>
             </div>
             <div className="h-[350px] flex flex-col gap-3  overflow-auto ">
               <div className="grid grid-cols-5 bg-white py-4 rounded-lg items-center">
@@ -84,7 +84,7 @@ const Report = () => {
               </div>
               <div className="grid grid-cols-5 bg-white py-4 rounded-lg items-center">
                 <div className=" ms-4">R-000001</div>
-                <div>Albert Punzalan</div>
+                <div>Alhotdsa Punzalan</div>
                 <div>Client</div>
                 <div>Trolling</div>
                 <div className="w-[100px] bg-primary text-center py-2 rounded-lg"> View</div>
@@ -131,4 +131,4 @@ const Report = () => {
   );
 };
 
-export default Report;
+export default Manage;
