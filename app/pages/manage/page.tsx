@@ -84,7 +84,7 @@ const Manage = () => {
               </div>
               <div className="grid grid-cols-5 bg-white py-4 rounded-lg items-center">
                 <div className=" ms-4">R-000001</div>
-                <div>Albert Punzalan</div>
+                <div>Alhotdsa Punzalan</div>
                 <div>Client</div>
                 <div>Trolling</div>
                 <div className="w-[100px] bg-primary text-center py-2 rounded-lg"> View</div>
