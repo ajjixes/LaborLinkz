@@ -45,7 +45,7 @@ const Report = () => {
               </svg>
             </div>
           </div>
-          <div className="bg-white h-[40px]  w-[40px] rounded-xl flex items-center justify-center">
+          {/* <div className="bg-white h-[40px]  w-[40px] rounded-xl flex items-center justify-center">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="32"
@@ -58,7 +58,7 @@ const Report = () => {
                 fill="#343434"
               />
             </svg>
-          </div>
+          </div> */}
         </div>
         <div className="bg-softWhite w-[1200px] h-[470px] rounded-[15px] relative p-12">
             <div className="grid grid-cols-5">

@@ -45,7 +45,7 @@ const Manage = () => {
               </svg>
             </div>
           </div>
-          <div className="bg-white h-[40px]  w-[40px] rounded-xl flex items-center justify-center">
+          {/* <div className="bg-white h-[40px]  w-[40px] rounded-xl flex items-center justify-center">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="32"
@@ -58,13 +58,13 @@ const Manage = () => {
                 fill="#343434"
               />
             </svg>
-          </div>
+          </div> */}
         </div>
         <div className="bg-softWhite w-[1200px] h-[470px] rounded-[15px] relative p-12">
             <div className="grid grid-cols-5">
               <div className="text-lg ms-4">User ID</div>
-              <div className="text-lg">Namer</div>
-              <div className="text-lg">Verification Type</div>
+              <div className="text-lg">Name</div>
+              <div className="text-lg">Verification</div>
               <div className="text-lg">Active Status</div>
             </div>
             <div className="h-[350px] flex flex-col gap-3  overflow-auto ">
