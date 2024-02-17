@@ -1,7 +1,17 @@
-import React from "react";
+"use client"
 import Navbar from "@/app/components/Navbar";
+import { useState } from 'react';
 
 const Manage = () => {
+  const [showModal, setShowModal] = useState(false);
+
+    const handleAccept = () => {
+        setShowModal(false);
+    };
+
+    const handleDecline = () => {
+        setShowModal(false);
+    };
   return (
     <div className="flex items-center gap-11 justify-center h-screen w-screen flex-container py-12">
       <Navbar />
@@ -71,59 +81,58 @@ const Manage = () => {
               <div className="grid grid-cols-5 bg-white py-4 rounded-lg items-center">
                 <div className=" ms-4">R-000001</div>
                 <div>Albert Punzalan</div>
-                <div>Client</div>
+                <div>Not Verified</div>
                 <div>Trolling</div>
-                <div className="w-[100px] bg-primary text-center py-2 rounded-lg"> View</div>
+                <button className="w-[100px] bg-primary text-center py-2 rounded-lg" onClick={() => setShowModal(true)}>View</button>
               </div>
-              <div className="grid grid-cols-5 bg-white py-4 rounded-lg items-center">
-                <div className=" ms-4">R-000001</div>
-                <div>Albert Punzalan</div>
-                <div>Client</div>
-                <div>Trolling</div>
-                <div className="w-[100px] bg-primary text-center py-2 rounded-lg"> View</div>
-              </div>
-              <div className="grid grid-cols-5 bg-white py-4 rounded-lg items-center">
-                <div className=" ms-4">R-000001</div>
-                <div>Alhotdsa Punzalan</div>
-                <div>Client</div>
-                <div>Trolling</div>
-                <div className="w-[100px] bg-primary text-center py-2 rounded-lg"> View</div>
-              </div>
-              <div className="grid grid-cols-5 bg-white py-4 rounded-lg items-center">
-                <div className=" ms-4">R-000001</div>
-                <div>Albert Punzalan</div>
-                <div>Client</div>
-                <div>Trolling</div>
-                <div className="w-[100px] bg-primary text-center py-2 rounded-lg"> View</div>
-              </div>
-              <div className="grid grid-cols-5 bg-white py-4 rounded-lg items-center">
-                <div className=" ms-4">R-000001</div>
-                <div>Albert Punzalan</div>
-                <div>Client</div>
-                <div>Trolling</div>
-                <div className="w-[100px] bg-primary text-center py-2 rounded-lg"> View</div>
-              </div>
-              <div className="grid grid-cols-5 bg-white py-4 rounded-lg items-center">
-                <div className=" ms-4">R-000001</div>
-                <div>Albert Punzalan</div>
-                <div>Client</div>
-                <div>Trolling</div>
-                <div className="w-[100px] bg-primary text-center py-2 rounded-lg"> View</div>
-              </div>
-              <div className="grid grid-cols-5 bg-white py-4 rounded-lg items-center">
-                <div className=" ms-4">R-000001</div>
-                <div>Albert Punzalan</div>
-                <div>Client</div>
-                <div>Trolling</div>
-                <div className="w-[100px] bg-primary text-center py-2 rounded-lg"> View</div>
-              </div>
-              <div className="grid grid-cols-5 bg-white py-4 rounded-lg items-center">
-                <div className=" ms-4">R-000001</div>
-                <div>Albert Punzalan</div>
-                <div>Client</div>
-                <div>Trolling</div>
-                <div className="w-[100px] bg-primary text-center py-2 rounded-lg"> View</div>
-              </div>
+              {showModal && (
+                <div className="fixed inset-0 overflow-y-auto overflow-x-hidden z-50 flex justify-center items-center">
+                    <div className="fixed inset-0 bg-black bg-opacity-50"></div>
+                    <div id="default-modal" aria-hidden="true" className="overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                        <div className="relative mx-auto mt-[100px] inset-x-0 top-0  p-4 w-full  max-w-2xl max-h-full">
+                            {/* Modal content */}
+                            <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                                {/* Modal header */}
+                                <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                                    <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                                        Verify User
+                                    </h3>
+                                    <button type="button" className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" onClick={() => setShowModal(false)}>
+                                        <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                                        </svg>
+                                        <span className="sr-only">Close modal</span>
+                                    </button>
+                                </div>
+                                {/* Modal body */}
+                                <div className="flex gap-4 flex-col items-center justify-center p-10">
+                                  <img
+                                    className="w-[70px] h-[70px] rounded-full bg-black object-cover"
+                                    src="/profile.jpg"
+                                    alt=""
+                                  />
+                                  <div className="my-3">Charles Joshua Bayubuts</div>
+                                  <div className="flex justify-center w-auto lg:w-[500px] gap-3 "> 
+                                      <div className="bg-[#f0f0f0] p-4 px-6 rounded-xl w-full text-center">bayubuts@example.com</div>
+                                      <div className="bg-[#f0f0f0] p-4 px-6 rounded-xl w-full text-center">0999999999</div>
+                                  </div>
+                                  <div className="w-auto lg:w-[500px] bg-[#f0f0f0] p-4 px-6 rounded-xl text-center"> 
+                                     Verified User
+                                  </div>
+                                  <div className="w-auto lg:w-[500px] bg-[#f0f0f0] p-4 px-6 rounded-xl text-center"> 
+                                     Client
+                                  </div>
+                                </div>
+                                {/* Modal footer */}
+                                <div className="justify-center flex items-center p-4 md:p-5 gap-3 border-t border-gray-200 rounded-b dark:border-gray-600">
+                                    <button onClick={handleAccept} type="button" className="text-black bg-[#00CCAA]/70 hover:[#00CCAA]/80 focus:ring-4 focus:outline-none focus:ring-[#00CCAA]/30 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-[#00CCAA]/60 dark:hover:[#00CCAA]/70 dark:focus:ring-[#00CCAA]/80">Approve</button>
+                                    <button onClick={handleAccept} type="button" className="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Decline</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
             </div>
         </div>
       </div>

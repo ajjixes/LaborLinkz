@@ -2,6 +2,16 @@ import Navbar from "@/app/components/Navbar";
 import React from "react";
 
 const Dashboard = () => {
+  const currentDate = new Date();
+  
+  const monthNames = ["January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December"];
+  const day = currentDate.getDate();
+  const monthIndex = currentDate.getMonth();
+  const year = currentDate.getFullYear();
+
+  const monthName = monthNames[monthIndex];
+  const formattedDate = `${monthName} ${day}, ${year}`;
   return (
     <div className="flex items-center gap-11 justify-center h-screen w-screen flex-container py-12">
       <Navbar />
@@ -38,7 +48,7 @@ const Dashboard = () => {
                 />
               </svg>
             </div>
-            <div className="ms-2">June 29</div>
+            <div className="ms-2">{formattedDate}</div>
           </div>
           <div className="flex bg-white py-3 px-3 rounded-md">
             <svg
