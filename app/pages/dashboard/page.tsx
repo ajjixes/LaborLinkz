@@ -1,5 +1,7 @@
+"use client";
 import Navbar from "@/app/components/Navbar";
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 const Dashboard = () => {
   const currentDate = new Date();
@@ -12,6 +14,50 @@ const Dashboard = () => {
 
   const monthName = monthNames[monthIndex];
   const formattedDate = `${monthName} ${day}, ${year}`;
+  const [totalUsers, setTotalUsers] = useState(null);
+  const [totalPost, setTotalPost] = useState(null);
+
+  const fetchTotalUsers = async () => {
+    try {
+      // Make a GET request to the endpoint
+      const response = await axios.get('http://192.168.8.37:8082/ap1/v1/auth/total-users'); // Assuming the backend is running on the same server
+  
+      // Extract total users count from the response data
+      const totalUsers = response.data.totalUsers;
+      
+      // Return the total number of users
+      setTotalUsers(totalUsers);
+    } catch (error) {
+      // Handle errors
+      console.error('Error fetching total number of users:', error);
+      throw new Error('Error fetching total number of users');
+    }
+  };
+
+  const fetchTotalPost = async () => {
+    try {
+      // Make a GET request to the endpoint
+      const response = await axios.get('http://192.168.8.37:8082/ap1/v1/post/total-post'); // Assuming the backend is running on the same server
+  
+      // Extract total users count from the response data
+      const totalPost = response.data.totalPosts;
+      
+      // Return the total number of users
+      setTotalPost(totalPost);
+    } catch (error) {
+      // Handle errors
+      console.error('Error fetching total number of users:', error);
+      throw new Error('Error fetching total number of users');
+    }
+  };
+
+  useEffect(() => {
+    // Call fetchTotalUsers when component mounts
+    fetchTotalUsers();
+    fetchTotalPost();
+  }, []); // Empty dependency array to run the effect only once on mount
+
+
   return (
     <div className="flex items-center gap-11 justify-center h-screen w-screen flex-container py-12">
       <Navbar />
@@ -109,7 +155,7 @@ const Dashboard = () => {
               </svg>
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-primary">100,249</h1>
+              <h1 className="text-2xl font-bold text-primary text-center">{totalUsers}</h1>
               <p className="font-medium">Overall users</p>
             </div>
           </div>
@@ -129,7 +175,7 @@ const Dashboard = () => {
               </svg>
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-primary">100,249</h1>
+              <h1 className="text-2xl font-bold text-primary text-center">0</h1>
               <p className="font-medium">Pending Verification</p>
             </div>
           </div>
@@ -157,17 +203,17 @@ const Dashboard = () => {
         <div className="flex flex-nowrap">
           <div className=" text-center p-7 justify-center w-[389.33px] h-[200px] rounded-[15px] bg-softWhite me-4">
               <div className="font-medium text-3xl mb-6">Analytics</div>
-              <div className="text-primary font-bold text-2xl">100,249</div>
+              <div className="text-primary font-bold text-2xl text-center">0</div>
               <div className="font-medium text-center">Total Number of <br /> Website Visits</div>
           </div>
-          <div className=" text-center p-7 justify-center w-[389.33px] h-[200px] rounded-[15px] bg-softWhite me-4">
+          {/* <div className=" text-center p-7 justify-center w-[389.33px] h-[200px] rounded-[15px] bg-softWhite me-4">
               <div className="font-medium text-3xl mb-6">Worker Status</div>
               <div className="text-primary font-bold text-2xl">100,249</div>
               <div className="font-medium text-center">No. of workers<br /> on job</div>
-          </div>
+          </div> */}
           <div className=" text-center p-7 justify-center w-[389.33px] h-[200px] rounded-[15px] bg-softWhite">
               <div className="font-medium text-3xl mb-6">Job Listings</div>
-              <div className="text-primary font-bold text-2xl">100,249</div>
+              <div className="text-primary font-bold text-2xl">{totalPost}</div>
               <div className="font-medium text-center">No. of active jobs<br /></div>
           </div>
         </div>
