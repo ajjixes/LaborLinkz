@@ -22,7 +22,7 @@ const Dashboard = () => {
   const fetchTotalUsers = async () => {
     try {
       // Make a GET request to the endpoint
-      const response = await axios.get('http://192.168.1.4:8082/ap1/v1/auth/total-users'); // Assuming the backend is running on the same server
+      const response = await axios.get('http://192.168.8.34:8082/ap1/v1/auth/total-users'); // Assuming the backend is running on the same server
   
       // Extract total users count from the response data
       const totalUsers = response.data.totalUsers;
@@ -39,7 +39,7 @@ const Dashboard = () => {
   const fetchTotalPost = async () => {
     try {
       // Make a GET request to the endpoint
-      const response = await axios.get('http://192.168.1.4:8082/ap1/v1/post/total-post'); // Assuming the backend is running on the same server
+      const response = await axios.get('http://192.168.8.34:8082/ap1/v1/post/total-post'); // Assuming the backend is running on the same server
   
       // Extract total users count from the response data
       const totalPost = response.data.totalPosts;
@@ -56,7 +56,7 @@ const Dashboard = () => {
   const fetchTotalVerified = async () => {
     try {
       // Make a GET request to the endpoint
-      const response = await axios.get('http://192.168.1.4:8082/ap1/v1/auth/total-verified');
+      const response = await axios.get('http://192.168.8.34:8082/ap1/v1/auth/total-verified');
   
       // Extract total users count from the response data
       const totalVerified = response.data.pendingVerificationUsers;
@@ -73,7 +73,7 @@ const Dashboard = () => {
   const fetchBanned = async () => {
     try {
       // Make a GET request to the endpoint
-      const response = await axios.get('http://192.168.1.4:8082/ap1/v1/auth/get-banned');
+      const response = await axios.get('http://192.168.8.34:8082/ap1/v1/auth/get-banned');
   
       // Extract total users count from the response data
       const totalBanned = response.data.bannedUsersCount;
@@ -239,16 +239,6 @@ const Dashboard = () => {
           </div>
         </div>
         <div className="flex flex-nowrap">
-          {/* <div className=" text-center p-7 justify-center w-[389.33px] h-[200px] rounded-[15px] bg-softWhite me-4">
-              <div className="font-medium text-3xl mb-6">Analytics</div>
-              <div className="text-primary font-bold text-2xl text-center">0</div>
-              <div className="font-medium text-center">Total Number of <br /> Website Visits</div>
-          </div> */}
-          {/* <div className=" text-center p-7 justify-center w-[389.33px] h-[200px] rounded-[15px] bg-softWhite me-4">
-              <div className="font-medium text-3xl mb-6">Worker Status</div>
-              <div className="text-primary font-bold text-2xl">100,249</div>
-              <div className="font-medium text-center">No. of workers<br /> on job</div>
-          </div> */}
           <div className=" text-center p-7 justify-center w-[389.33px] h-[200px] rounded-[15px] bg-softWhite">
               <div className="font-medium text-3xl mb-6">Job Listings</div>
               <div className="text-primary font-bold text-2xl">{totalPost}</div>
