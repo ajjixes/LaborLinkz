@@ -17,6 +17,7 @@ const Dashboard = () => {
   const [totalUsers, setTotalUsers] = useState(null);
   const [totalPost, setTotalPost] = useState(null);
   const [totalVerified, setTotalVerified] = useState(null);
+  const [totalBanned, setTotalBanned] = useState(null);
 
   const fetchTotalUsers = async () => {
     try {
@@ -68,11 +69,30 @@ const Dashboard = () => {
       throw new Error('Error fetching total number of users');
     }
   };
+
+  const fetchBanned = async () => {
+    try {
+      // Make a GET request to the endpoint
+      const response = await axios.get('http://192.168.1.4:8082/ap1/v1/auth/get-banned');
+  
+      // Extract total users count from the response data
+      const totalBanned = response.data.bannedUsersCount;
+      
+      // Return the total number of users
+      setTotalBanned(totalBanned);
+    } catch (error) {
+      // Handle errors
+      console.error('Error fetching total number of users:', error);
+      throw new Error('Error fetching total number of users');
+    }
+  };
+
   useEffect(() => {
     // Call fetchTotalUsers when component mounts
     fetchTotalUsers();
     fetchTotalPost();
     fetchTotalVerified();
+    fetchBanned();
   }, []); // Empty dependency array to run the effect only once on mount
 
 
@@ -213,7 +233,7 @@ const Dashboard = () => {
               </svg>
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-primary">100,249</h1>
+              <h1 className="text-2xl font-bold text-primary">{totalBanned}</h1>
               <p className="font-medium">Banned Accounts</p>
             </div>
           </div>
