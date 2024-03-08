@@ -1,67 +1,110 @@
 "use client"
 import Navbar from "@/app/components/Navbar";
-import { useState } from 'react';
-interface Data {
-  id: number;
-  imageFront: string;
-  imageBack: string;
-  name: string;
+import { useState, useEffect } from 'react';
+import axios from "axios";
+
+
+interface UnverifiedUser {
+  _id: string;
+  identification: {
+    back: string | boolean;
+    front: string | boolean;
+    idType: string | boolean;
+  };
+  region: {
+    code: string;
+    name: string;
+  };
+  province: {
+    code: string;
+    name: string;
+  };
+  city: {
+    code: string;
+    name: string;
+  };
+  barangay: {
+    code: string;
+    name: string;
+  };
+  image: string;
+  firstName: string;
+  lastName: string;
   contactNumber: string;
+  gender: string;
+  location?: string;
   email: string;
-  Verification: string;
-  profilePic: string;
+  password: string;
+  role: string;
+  rating: number;
+  createdAt: string;
+  updatedAt: string;
+  archived: boolean;
+  banned: boolean;
+  ratingPoints: number;
+  verified: boolean;
+  __v: number;
 }
-const data = [
-  {
-    id: 1,
-    imageFront: "",
-    imageBack: "",
-    name: "Albert Punzalan",
-    contactNumber: "09234567891",
-    email: "Albert@gmail.com",
-    Verification: "Not Verified",
-    profilePic:""
-  },
-  {
-    id: 2,
-    imageFront: "",
-    imageBack: "",
-    name: "Aaron Ramos",
-    contactNumber: "09234567891",
-    email: "Aaron@gmail.com",
-    Verification: "Verified",
-    profilePic:""
-  },
-  {
-    id: 3,
-    imageFront: "",
-    imageBack: "",
-    name: "Remoh Bayubuts",
-    contactNumber: "09982785865",
-    email: "Remoh@gmail.com",
-    Verification: "Verified",
-    profilePic:""
-  },
-]
+
 
 const Manage = () => {
   const [showModal, setShowModal] = useState(false);
-  const [selectedUser, setSelectedUser] = useState<Data | null>(null);
+  const [selectedUser, setSelectedUser] = useState<UnverifiedUser | null>(null);
+  const [unverifiedData, setUnverifiedData] = useState<UnverifiedUser[]>([]);
 
-  const handleShowModal = (userData: Data) => {
+  useEffect(() => {
+    const getReports = async () => {
+      try {
+        const response = await axios.get('http://192.168.1.4:8082/ap1/v1/auth/get-unverified');
+        console.log(response.data);
+        setUnverifiedData(response.data);
+    
+      } catch (error) {
+        console.error('Error fetching reports data:', error);
+        throw new Error('Error fetching reports data');
+      }
+    };
+
+    getReports();
+  }, []);
+
+
+
+  const handleShowModal = (userData: UnverifiedUser) => {
     setSelectedUser(userData);
     setShowModal(true);
-  };
-
-  const handleAccept = () => {
-    setShowModal(false);
-    // Implement your logic here
   };
 
   const handleDecline = () => {
     setShowModal(false);
     // Implement your logic here
   };
+
+  const handleAccept = async () => {
+    try {
+      if (!selectedUser) return;
+  
+      const userId = selectedUser._id;
+      console.log(`THIS IS THE USER ID: ${userId}`)
+
+      const response = await axios.post(`http://192.168.1.4:8082/ap1/v1/auth/verify-user`, { userId });
+      
+      // Update the report data if the user is banned successfully
+      console.log("User verified successfully." + response.data);
+      // Optionally, you can update the UI to reflect the user's ban status
+    } catch (error) {
+      if ((error as any).response && (error as any).response.status === 409) {
+        // Provide feedback to the user that the user is already banned
+        console.log("User is already verified.");
+        // Optionally, you can update the UI to reflect the user's ban status
+      } else {
+        // Handle other errors
+        console.log("Error verifying user:", (error as Error).message);
+        throw new Error('Error verifying user');
+      }
+    }
+  };
+
   return (
     <div className="flex items-center gap-11 justify-center h-screen w-screen flex-container py-12">
       <Navbar />
@@ -114,16 +157,16 @@ const Manage = () => {
               <div className="text-lg">Verification</div>
             </div>
             <div className="h-[350px] flex flex-col gap-3  overflow-auto ">
-              {data.map((userData, index) => (
+              {unverifiedData.map((unverifiedItem, index) => (
                 <div className="grid grid-cols-5 bg-white py-4 rounded-lg items-center" key={index}>
-                  <div className="ms-4">{userData.name}</div>
-                  <div>{userData.contactNumber}</div>
-                  <div>{userData.email}</div>
-                  <div>{userData.Verification}</div>
-                  <button className="w-[100px] bg-primary text-center py-2 rounded-lg" onClick={() => handleShowModal(userData)}>View</button>
+                  <div className="ms-4">{unverifiedItem.firstName} {unverifiedItem.lastName}</div>
+                  <div>{unverifiedItem.contactNumber}</div>
+                  <div>{unverifiedItem.email}</div>
+                  <div>{unverifiedItem.verified ? "Verified" : "Not Verified"}</div>
+                  <button className="w-[100px] bg-primary text-center py-2 rounded-lg" onClick={() => handleShowModal(unverifiedItem)}>View</button>
                 </div>
               ))}
-              {showModal && selectedUser && (
+             {showModal && selectedUser && (
                 <div className="fixed inset-0 overflow-y-auto overflow-x-hidden z-50 flex justify-center items-center">
                     <div className="fixed inset-0 bg-black bg-opacity-50"></div>
                     <div id="default-modal" aria-hidden="true" className="overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
@@ -149,7 +192,7 @@ const Manage = () => {
                                     src="/profile.jpg"
                                     alt=""
                                   />
-                                  <div className="my-3">{selectedUser.name}</div>
+                                  <div className="my-3">{selectedUser.firstName} {selectedUser.lastName}</div>
                                   <div className="flex justify-center w-auto lg:w-[500px] gap-3 "> 
                                       <div className="bg-[#f0f0f0] p-4 px-6 rounded-xl w-full text-center">{selectedUser.email}</div>
                                       <div className="bg-[#f0f0f0] p-4 px-6 rounded-xl w-full text-center">{selectedUser.contactNumber}</div>
@@ -174,20 +217,18 @@ const Manage = () => {
                                       />
                                       <div>Back</div>
                                     </div>
-                                   
                                  </div>
                                 </div>
                                 {/* Modal footer */}
                                 <div className="justify-center flex items-center p-4 md:p-5 gap-3 border-t border-gray-200 rounded-b dark:border-gray-600">
                                     <button onClick={handleAccept} type="button" className="text-black bg-[#00CCAA]/70 hover:[#00CCAA]/80 focus:ring-4 focus:outline-none focus:ring-[#00CCAA]/30 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-[#00CCAA]/60 dark:hover:[#00CCAA]/70 dark:focus:ring-[#00CCAA]/80">Approve</button>
-                                    <button onClick={handleAccept} type="button" className="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Decline</button>
-                                    {/* <button onClick={handleAccept} type="button" className="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Archive</button> */}
+                                    <button onClick={handleDecline} type="button" className="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Decline</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            )}
+              )}
             </div>
         </div>
       </div>
