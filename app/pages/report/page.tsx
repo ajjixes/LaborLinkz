@@ -1,14 +1,78 @@
-import React from "react";
+"use client"
 import Navbar from "@/app/components/Navbar";
+import { useState } from 'react';
+interface Data {
+  id: number;
+  imageFront: string;
+  imageBack: string;
+  name: string;
+  contactNumber: string;
+  email: string;
+  violation: string;
+  description: string;
+  profilePic: string;
+}
+const data = [
+  {
+    id: 1,
+    imageFront: "",
+    imageBack: "",
+    name: "Albert Punzalan",
+    contactNumber: "09234567891",
+    email: "Albert@gmail.com",
+    violation: "Trolling",
+    description:"This user doesnt pay minimum wage",
+    profilePic:""
+  },
+  {
+    id: 2,
+    imageFront: "",
+    imageBack: "",
+    name: "Aaron Ramos",
+    contactNumber: "09234567891",
+    email: "Aaron@gmail.com",
+    violation: "Fake User",
+    description:"Fake User",
+    profilePic:""
+  },
+  {
+    id: 3,
+    imageFront: "",
+    imageBack: "",
+    name: "Remoh Bayubuts",
+    contactNumber: "09982785865",
+    email: "Remoh@gmail.com",
+    violation: "Trolling",
+    description:"This person is just trolling me",
+    profilePic:""
+  },
+]
 
-const Report = () => {
+const Manage = () => {
+  const [showModal, setShowModal] = useState(false);
+  const [selectedUser, setSelectedUser] = useState<Data | null>(null);
+
+  const handleShowModal = (userData: Data) => {
+    setSelectedUser(userData);
+    setShowModal(true);
+  };
+
+  const handleAccept = () => {
+    setShowModal(false);
+    // Implement your logic here
+  };
+
+  const handleDecline = () => {
+    setShowModal(false);
+    // Implement your logic here
+  };
   return (
     <div className="flex items-center gap-11 justify-center h-screen w-screen flex-container py-12">
       <Navbar />
       <div className="flex items-center justify-center flex-col gap-10">
         <div className="bg-black w-[1200px] h-[130px] rounded-[15px] flex items-center px-20 gap-3">
           <div className="text-3xl font-medium text-primary">
-            Pending Reports
+            Reported Accounts
           </div>
           <div className="bg-white flex items-center w-[300px] h-[40px] rounded-xl px-4 gap-2 ms-auto">
             <div>
@@ -30,7 +94,7 @@ const Report = () => {
               type="text"
               placeholder="Search"
             />
-            <div>
+            {/* <div>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
@@ -43,87 +107,79 @@ const Report = () => {
                   fill="#343434"
                 />
               </svg>
-            </div>
+            </div> */}
           </div>
-          {/* <div className="bg-white h-[40px]  w-[40px] rounded-xl flex items-center justify-center">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="32"
-              height="32"
-              viewBox="0 0 40 40"
-              fill="none"
-            >
-              <path
-                d="M20 35C16.1667 35 12.8261 33.7289 9.97833 31.1867C7.13056 28.6444 5.49889 25.4711 5.08333 21.6667H8.5C8.88889 24.5556 10.1739 26.9444 12.355 28.8333C14.5361 30.7222 17.0844 31.6667 20 31.6667C23.25 31.6667 26.0072 30.5344 28.2717 28.27C30.5361 26.0056 31.6678 23.2489 31.6667 20C31.6667 16.75 30.5344 13.9928 28.27 11.7283C26.0056 9.46389 23.2489 8.33222 20 8.33333C18.0833 8.33333 16.2917 8.77778 14.625 9.66667C12.9583 10.5556 11.5556 11.7778 10.4167 13.3333H15V16.6667H5V6.66667H8.33333V10.5833C9.75 8.80556 11.4794 7.43056 13.5217 6.45833C15.5639 5.48611 17.7233 5 20 5C22.0833 5 24.035 5.39611 25.855 6.18833C27.675 6.98056 29.2583 8.04944 30.605 9.395C31.9517 10.7428 33.0211 12.3261 33.8133 14.145C34.6056 15.9639 35.0011 17.9156 35 20C35 22.0833 34.6039 24.035 33.8117 25.855C33.0194 27.675 31.9506 29.2583 30.605 30.605C29.2572 31.9517 27.6739 33.0211 25.855 33.8133C24.0361 34.6056 22.0844 35.0011 20 35ZM24.6667 27L18.3333 20.6667V11.6667H21.6667V19.3333L27 24.6667L24.6667 27Z"
-                fill="#343434"
-              />
-            </svg>
-          </div> */}
         </div>
         <div className="bg-softWhite w-[1200px] h-[470px] rounded-[15px] relative p-12">
             <div className="grid grid-cols-5">
-              <div className="text-lg ms-4">Report ID</div>
-              <div className="text-lg">Reported User</div>
-              <div className="text-lg">User Type</div>
+              <div className="text-lg ms-4">Name</div>
+              <div className="text-lg">Contact Number</div>
+              <div className="text-lg">Email</div>
               <div className="text-lg">Violation</div>
             </div>
             <div className="h-[350px] flex flex-col gap-3  overflow-auto ">
-              <div className="grid grid-cols-5 bg-white py-4 rounded-lg items-center">
-                <div className=" ms-4">R-000001</div>
-                <div>Albert Punzalan</div>
-                <div>Client</div>
-                <div>Trolling</div>
-                <div className="w-[100px] bg-primary text-center py-2 rounded-lg"> View</div>
-              </div>
-              <div className="grid grid-cols-5 bg-white py-4 rounded-lg items-center">
-                <div className=" ms-4">R-000001</div>
-                <div>Albert Punzalan</div>
-                <div>Client</div>
-                <div>Trolling</div>
-                <div className="w-[100px] bg-primary text-center py-2 rounded-lg"> View</div>
-              </div>
-              <div className="grid grid-cols-5 bg-white py-4 rounded-lg items-center">
-                <div className=" ms-4">R-000001</div>
-                <div>Albert Punzalan</div>
-                <div>Client</div>
-                <div>Trolling</div>
-                <div className="w-[100px] bg-primary text-center py-2 rounded-lg"> View</div>
-              </div>
-              <div className="grid grid-cols-5 bg-white py-4 rounded-lg items-center">
-                <div className=" ms-4">R-000001</div>
-                <div>Albert Punzalan</div>
-                <div>Client</div>
-                <div>Trolling</div>
-                <div className="w-[100px] bg-primary text-center py-2 rounded-lg"> View</div>
-              </div>
-              <div className="grid grid-cols-5 bg-white py-4 rounded-lg items-center">
-                <div className=" ms-4">R-000001</div>
-                <div>Albert Punzalan</div>
-                <div>Client</div>
-                <div>Trolling</div>
-                <div className="w-[100px] bg-primary text-center py-2 rounded-lg"> View</div>
-              </div>
-              <div className="grid grid-cols-5 bg-white py-4 rounded-lg items-center">
-                <div className=" ms-4">R-000001</div>
-                <div>Albert Punzalan</div>
-                <div>Client</div>
-                <div>Trolling</div>
-                <div className="w-[100px] bg-primary text-center py-2 rounded-lg"> View</div>
-              </div>
-              <div className="grid grid-cols-5 bg-white py-4 rounded-lg items-center">
-                <div className=" ms-4">R-000001</div>
-                <div>Albert Punzalan</div>
-                <div>Client</div>
-                <div>Trolling</div>
-                <div className="w-[100px] bg-primary text-center py-2 rounded-lg"> View</div>
-              </div>
-              <div className="grid grid-cols-5 bg-white py-4 rounded-lg items-center">
-                <div className=" ms-4">R-000001</div>
-                <div>Albert Punzalan</div>
-                <div>Client</div>
-                <div>Trolling</div>
-                <div className="w-[100px] bg-primary text-center py-2 rounded-lg"> View</div>
-              </div>
+              {data.map((userData, index) => (
+                <div className="grid grid-cols-5 bg-white py-4 rounded-lg items-center" key={index}>
+                  <div className="ms-4">{userData.name}</div>
+                  <div>{userData.contactNumber}</div>
+                  <div>{userData.email}</div>
+                  <div>{userData.violation}</div>
+                  <button className="w-[100px] bg-primary text-center py-2 rounded-lg" onClick={() => handleShowModal(userData)}>View</button>
+                </div>
+              ))}
+              {showModal && selectedUser && (
+                <div className="fixed inset-0 overflow-y-auto overflow-x-hidden z-50 flex justify-center items-center">
+                    <div className="fixed inset-0 bg-black bg-opacity-50"></div>
+                    <div id="default-modal" aria-hidden="true" className="overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                        <div className="relative mx-auto mt-[100px] inset-x-0 top-0  p-4 w-full  max-w-2xl max-h-full">
+                            {/* Modal content */}
+                            <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                                {/* Modal header */}
+                                <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                                    <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                                        Reported Account
+                                    </h3>
+                                    <button type="button" className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" onClick={() => setShowModal(false)}>
+                                        <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                                        </svg>
+                                        <span className="sr-only">Close modal</span>
+                                    </button>
+                                </div>
+                                {/* Modal body */}
+                                <div className="flex gap-4 flex-col items-center justify-center p-10">
+                                  <img
+                                    className="w-[70px] h-[70px] rounded-full bg-black object-cover"
+                                    src="/profile.jpg"
+                                    alt=""
+                                  />
+                                  <div className="my-3">{selectedUser.name}</div>
+                                  <div className="flex justify-center w-auto lg:w-[500px] gap-3 "> 
+                                      <div className="bg-[#f0f0f0] p-4 px-6 rounded-xl w-full text-center">{selectedUser.email}</div>
+                                      <div className="bg-[#f0f0f0] p-4 px-6 rounded-xl w-full text-center">{selectedUser.contactNumber}</div>
+                                  </div>
+                                  <div className="flex align-center justify-center gap-3 my-2">
+                                    <div className="flex flex-col items-center justify-center gap-2">
+                                       <div className="bg-[#f0f0f0] p-4 px-6 rounded-xl w-[500px] text-center">{selectedUser.violation}</div>
+                                       <div className="bg-[#f0f0f0] p-4 px-6 rounded-xl w-[500px] h-[200px] text-center">{selectedUser.description}</div>
+                                    </div>
+                                   
+                                 </div>
+                                  {/* <div className="w-auto lg:w-[500px] bg-[#f0f0f0] p-4 px-6 rounded-xl text-center"> 
+                                     Client
+                                  </div> */}
+                                </div>
+                                {/* Modal footer */}
+                                <div className="justify-center flex items-center p-4 md:p-5 gap-3 border-t border-gray-200 rounded-b dark:border-gray-600">
+                                    <button onClick={handleAccept} type="button" className="text-black bg-[#f0f0f0]/70 hover:[#00CCAA]/80 focus:ring-4 focus:outline-none focus:ring-[#00CCAA]/30 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-[#f0f0f0]/60 dark:hover:[#f0f0f0]/70 dark:focus:ring-[#f0f0f0]/80">Cancel</button>
+                                    <button onClick={handleAccept} type="button" className="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Ban</button>
+                                    {/* <button onClick={handleAccept} type="button" className="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Archive</button> */}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
             </div>
         </div>
       </div>
@@ -131,4 +187,4 @@ const Report = () => {
   );
 };
 
-export default Report;
+export default Manage;
