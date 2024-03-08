@@ -16,11 +16,12 @@ const Dashboard = () => {
   const formattedDate = `${monthName} ${day}, ${year}`;
   const [totalUsers, setTotalUsers] = useState(null);
   const [totalPost, setTotalPost] = useState(null);
+  const [totalVerified, setTotalVerified] = useState(null);
 
   const fetchTotalUsers = async () => {
     try {
       // Make a GET request to the endpoint
-      const response = await axios.get('http://192.168.8.37:8082/ap1/v1/auth/total-users'); // Assuming the backend is running on the same server
+      const response = await axios.get('http://192.168.1.4:8082/ap1/v1/auth/total-users'); // Assuming the backend is running on the same server
   
       // Extract total users count from the response data
       const totalUsers = response.data.totalUsers;
@@ -37,7 +38,7 @@ const Dashboard = () => {
   const fetchTotalPost = async () => {
     try {
       // Make a GET request to the endpoint
-      const response = await axios.get('http://192.168.8.37:8082/ap1/v1/post/total-post'); // Assuming the backend is running on the same server
+      const response = await axios.get('http://192.168.1.4:8082/ap1/v1/post/total-post'); // Assuming the backend is running on the same server
   
       // Extract total users count from the response data
       const totalPost = response.data.totalPosts;
@@ -51,10 +52,27 @@ const Dashboard = () => {
     }
   };
 
+  const fetchTotalVerified = async () => {
+    try {
+      // Make a GET request to the endpoint
+      const response = await axios.get('http://192.168.1.4:8082/ap1/v1/auth/total-verified');
+  
+      // Extract total users count from the response data
+      const totalVerified = response.data.pendingVerificationUsers;
+      
+      // Return the total number of users
+      setTotalVerified(totalVerified);
+    } catch (error) {
+      // Handle errors
+      console.error('Error fetching total number of users:', error);
+      throw new Error('Error fetching total number of users');
+    }
+  };
   useEffect(() => {
     // Call fetchTotalUsers when component mounts
     fetchTotalUsers();
     fetchTotalPost();
+    fetchTotalVerified();
   }, []); // Empty dependency array to run the effect only once on mount
 
 
@@ -175,7 +193,7 @@ const Dashboard = () => {
               </svg>
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-primary text-center">0</h1>
+              <h1 className="text-2xl font-bold text-primary text-center">{totalVerified}</h1>
               <p className="font-medium">Pending Verification</p>
             </div>
           </div>
