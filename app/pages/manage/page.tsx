@@ -48,15 +48,20 @@ interface UnverifiedUser {
 
 
 const Manage = () => {
-  const host = "http://192.168.1.4:8082/";
+  const host = "http://192.168.8.34:8082/";
   const [showModal, setShowModal] = useState(false);
+  const [showConfirmation, setShowConfirmation] = useState(false);
   const [selectedUser, setSelectedUser] = useState<UnverifiedUser | null>(null);
   const [unverifiedData, setUnverifiedData] = useState<UnverifiedUser[]>([]);
+  const [successMessage, setSuccessMessage] = useState(false);
+  const [alreadyVerified, setAlreadyVerified] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(false);
+
 
   useEffect(() => {
     const getReports = async () => {
       try {
-        const response = await axios.get('http://192.168.1.4:8082/ap1/v1/auth/get-unverified');
+        const response = await axios.get('http://192.168.8.34:8082/ap1/v1/auth/get-unverified');
         console.log(response.data);
         setUnverifiedData(response.data);
     
@@ -79,35 +84,69 @@ const Manage = () => {
 
   const handleDecline = () => {
     setShowModal(false);
-    // Implement your logic here
   };
 
-  const handleAccept = async () => {
+  const handleVerifyDecline = () => {
+    setShowConfirmation(false);
+  };
+
+  const handleCloseSuccessMessage = () => {
+    setSuccessMessage(false);
+  };
+
+  const handleVerify = async () => {
     try {
       if (!selectedUser) return;
   
       const userId = selectedUser._id;
       console.log(`THIS IS THE USER ID: ${userId}`)
 
-      const response = await axios.post(`http://192.168.1.4:8082/ap1/v1/auth/verify-user`, { userId });
+      const response = await axios.post(`http://192.168.8.34:8082/ap1/v1/auth/verify-user`, { userId });
       
       // Update the report data if the user is banned successfully
       console.log("User verified successfully." + response.data);
+
+      setShowModal(false);
+      setShowConfirmation(false);
+      setSuccessMessage(true);
+
+      setTimeout(() => {
+        setSuccessMessage(false);
+      }, 3000);
       // Optionally, you can update the UI to reflect the user's ban status
     } catch (error) {
       if ((error as any).response && (error as any).response.status === 409) {
-        // Provide feedback to the user that the user is already banned
+        setShowModal(false);
+        setShowConfirmation(false);
+        setAlreadyVerified(true);
+
+        setTimeout(() => {
+          setAlreadyVerified(false);
+        }, 3000);
+
         console.log("User is already verified.");
         // Optionally, you can update the UI to reflect the user's ban status
       } else {
         // Handle other errors
+        setShowModal(false);
+        setShowConfirmation(false);
+        setErrorMessage(true);
+
+        setTimeout(() => {
+          setErrorMessage(false);
+        }, 3000);
+
         console.log("Error verifying user:", (error as Error).message);
-        throw new Error('Error verifying user');
       }
     }
   };
 
+  const handleAccept = async () => {
+    setShowConfirmation(true);
+  };
+
   return (
+    
     <div className="flex items-center gap-11 justify-center h-screen w-screen flex-container py-12">
       <Navbar />
       <div className="flex items-center justify-center flex-col gap-10">
@@ -115,7 +154,7 @@ const Manage = () => {
           <div className="text-3xl font-medium text-primary">
             Manage Accounts
           </div>
-          <div className="bg-white flex items-center w-[300px] h-[40px] rounded-xl px-4 gap-2 ms-auto">
+          {/* <div className="bg-white flex items-center w-[300px] h-[40px] rounded-xl px-4 gap-2 ms-auto">
             <div>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -135,21 +174,7 @@ const Manage = () => {
               type="text"
               placeholder="Search"
             />
-            {/* <div>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                viewBox="0 0 27 30"
-                fill="none"
-              >
-                <path
-                  d="M16.6685 15V28.1333C16.7352 28.6333 16.5685 29.1667 16.1852 29.5167C16.031 29.6712 15.8478 29.7937 15.6462 29.8774C15.4446 29.961 15.2285 30.0041 15.0102 30.0041C14.7919 30.0041 14.5758 29.961 14.3741 29.8774C14.1725 29.7937 13.9894 29.6712 13.8352 29.5167L10.4852 26.1667C10.3034 25.989 10.1652 25.7716 10.0813 25.5317C9.9975 25.2917 9.97029 25.0356 10.0018 24.7833V15H9.95185L0.351846 2.7C0.0811931 2.35255 -0.040931 1.9121 0.0121593 1.47488C0.0652495 1.03767 0.289238 0.639244 0.63518 0.366667C0.951846 0.133333 1.30185 0 1.66851 0H25.0018C25.3685 0 25.7185 0.133333 26.0352 0.366667C26.3811 0.639244 26.6051 1.03767 26.6582 1.47488C26.7113 1.9121 26.5892 2.35255 26.3185 2.7L16.7185 15H16.6685Z"
-                  fill="#343434"
-                />
-              </svg>
-            </div> */}
-          </div>
+          </div> */}
         </div>
         <div className="bg-softWhite w-[1200px] h-[470px] rounded-[15px] relative p-12">
             <div className="grid grid-cols-5">
@@ -169,7 +194,7 @@ const Manage = () => {
                 </div>
               ))}
              {showModal && selectedUser && (
-                <div className="fixed inset-0 overflow-y-auto overflow-x-hidden z-50 flex justify-center items-center">
+                <div className="fixed inset-0 overflow-y-auto overflow-x-hidden z-10 flex justify-center items-center">
                     <div className="fixed inset-0 bg-black bg-opacity-50"></div>
                     <div id="default-modal" aria-hidden="true" className="overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
                         <div className="relative mx-auto mt-[100px] inset-x-0 top-0  p-4 w-full  max-w-2xl max-h-full">
@@ -206,16 +231,22 @@ const Manage = () => {
                                   </div>
                                   <div className="flex align-center justify-center gap-3 my-2">
                                     <div className="flex flex-col items-center justify-center gap-2">
-                                      <Image
-                                        className="rounded-lg bg-red-500 h-[150px] w-[244px] object-cover"
-                                        src={`${host}${selectedUser.identification.front}`}
-                                        alt="Front"
-                                        width={70}
-                                        height={70}
-                                      />
+                                    {selectedUser.identification.front !== false && selectedUser.identification.front !== null ? (
+                                        <Image
+                                          className="rounded-lg bg-red-500 h-[150px] w-[244px] object-cover"
+                                          src={`${host}${selectedUser.identification.front}`}
+                                          alt="Front"
+                                          width={70}
+                                          height={70}
+                                        />
+                                      ) : (
+                                        <p className="rounded-lg bg-[#f0f0f0] h-[150px] w-[244px] flex items-center justify-center">No Image</p>
+                                      )}
+
                                       <div>Front</div>
                                     </div>
                                     <div className="flex flex-col items-center justify-center gap-2">
+                                    {selectedUser.identification.front !== false && selectedUser.identification.front !== null ? (
                                       <Image
                                         className="rounded-lg bg-red-500 h-[150px] w-[244px] object-cover"
                                         src={`${host}${selectedUser.identification.back}`}
@@ -223,6 +254,9 @@ const Manage = () => {
                                         width={70}
                                         height={70}
                                       />
+                                      ) : (
+                                        <p className= "rounded-lg bg-[#f0f0f0] h-[150px] w-[244px] flex items-center justify-center ">No Image</p>
+                                      )}
                                       <div>Back</div>
                                     </div>
                                  </div>
@@ -240,6 +274,44 @@ const Manage = () => {
             </div>
         </div>
       </div>
+      {showConfirmation && (
+              <div className="fixed inset-0 overflow-y-auto overflow-x-hidden z-20 flex justify-center items-center">
+                <div className="fixed inset-0 bg-black opacity-50 z-30"></div>
+                <div className="relative bg-white rounded-lg p-8 max-w-md w-full z-40">
+                  {/* Your modal content here */}
+                  <p>Are you sure you want to verify this user?</p>
+                  {/* Modal footer */}
+                  <div className="justify-center flex items-center p-4 md:p-5 gap-3 border-t border-gray-200 rounded-b dark:border-gray-600">
+                      <button onClick={handleVerify} type="button" className="text-black bg-[#00CCAA]/70 hover:[#00CCAA]/80 focus:ring-4 focus:outline-none focus:ring-[#00CCAA]/30 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-[#00CCAA]/60 dark:hover:[#00CCAA]/70 dark:focus:ring-[#00CCAA]/80">Confirm</button>
+                      <button onClick={handleVerifyDecline} type="button" className="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Cancel</button>
+                  </div>
+                </div>
+              </div>
+      )}
+      {successMessage && (
+        <div className="fixed top-0 flex justify-center z-50 mt-4">
+          <div className="bg-green-500 text-white py-2 px-4 rounded-md shadow-md">
+            You have approved the request for verification 
+            <button onClick={handleCloseSuccessMessage} className="ml-2 text-white font-bold focus:outline-none">&times;</button>
+          </div>
+        </div>
+      )}
+      {alreadyVerified && (
+        <div className="fixed top-0 flex justify-center z-50 mt-4">
+          <div className="bg-red-500 text-white py-2 px-4 rounded-md shadow-md">
+            This user has already been verified!
+            <button onClick={handleCloseSuccessMessage} className="ml-2 text-white font-bold focus:outline-none">&times;</button>
+          </div>
+        </div>
+      )}
+      {errorMessage && (
+        <div className="fixed top-0 flex justify-center z-50 mt-4">
+          <div className="bg-red-500 text-white py-4 px-8 rounded-md shadow-md">
+            There seems to be an error!
+            <button onClick={handleCloseSuccessMessage} className="ml-2 text-white font-bold focus:outline-none">&times;</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
