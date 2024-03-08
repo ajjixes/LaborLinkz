@@ -201,11 +201,11 @@ const Dashboard = () => {
           </div>
         </div>
         <div className="flex flex-nowrap">
-          <div className=" text-center p-7 justify-center w-[389.33px] h-[200px] rounded-[15px] bg-softWhite me-4">
+          {/* <div className=" text-center p-7 justify-center w-[389.33px] h-[200px] rounded-[15px] bg-softWhite me-4">
               <div className="font-medium text-3xl mb-6">Analytics</div>
               <div className="text-primary font-bold text-2xl text-center">0</div>
               <div className="font-medium text-center">Total Number of <br /> Website Visits</div>
-          </div>
+          </div> */}
           {/* <div className=" text-center p-7 justify-center w-[389.33px] h-[200px] rounded-[15px] bg-softWhite me-4">
               <div className="font-medium text-3xl mb-6">Worker Status</div>
               <div className="text-primary font-bold text-2xl">100,249</div>
