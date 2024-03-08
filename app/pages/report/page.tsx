@@ -251,13 +251,13 @@ const Manage = () => {
                                 </div>
                                 {/* Modal body */}
                                 <div className="flex gap-4 flex-col items-center justify-center p-10">
-                                  {/* <Image
+                                  <Image
                                     className="w-[70px] h-[70px] rounded-full bg-black object-cover"
                                     src={`${host}${selectedReport.reportedUserId.image}`}
                                     alt=""
                                     width={70}
                                     height={70}
-                                  /> */}
+                                  />
                                   <div className="my-3">{selectedReport.reportedUserId.firstName}  {selectedReport.reportedUserId.lastName}</div>
                                   <div className="flex justify-center w-auto lg:w-[500px] gap-3 "> 
                                       <div className="bg-[#f0f0f0] p-4 px-6 rounded-xl w-full text-center">{selectedReport.reportedUserId.email}</div>

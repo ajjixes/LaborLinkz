@@ -2,7 +2,7 @@
 import Navbar from "@/app/components/Navbar";
 import { useState, useEffect } from 'react';
 import axios from "axios";
-
+import Image from "next/image";
 
 interface UnverifiedUser {
   _id: string;
@@ -48,6 +48,7 @@ interface UnverifiedUser {
 
 
 const Manage = () => {
+  const host = "http://192.168.1.4:8082/";
   const [showModal, setShowModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState<UnverifiedUser | null>(null);
   const [unverifiedData, setUnverifiedData] = useState<UnverifiedUser[]>([]);
@@ -73,6 +74,7 @@ const Manage = () => {
   const handleShowModal = (userData: UnverifiedUser) => {
     setSelectedUser(userData);
     setShowModal(true);
+    console.log(selectedUser?.identification.front)
   };
 
   const handleDecline = () => {
@@ -187,10 +189,12 @@ const Manage = () => {
                                 </div>
                                 {/* Modal body */}
                                 <div className="flex gap-4 flex-col items-center justify-center p-10">
-                                  <img
+                                  <Image
                                     className="w-[70px] h-[70px] rounded-full bg-black object-cover"
-                                    src="/profile.jpg"
+                                    src={`${host}${selectedUser.image}`}
                                     alt=""
+                                    width={70}
+                                    height={70}
                                   />
                                   <div className="my-3">{selectedUser.firstName} {selectedUser.lastName}</div>
                                   <div className="flex justify-center w-auto lg:w-[500px] gap-3 "> 
@@ -202,18 +206,22 @@ const Manage = () => {
                                   </div>
                                   <div className="flex align-center justify-center gap-3 my-2">
                                     <div className="flex flex-col items-center justify-center gap-2">
-                                      <img
+                                      <Image
                                         className="rounded-lg bg-red-500 h-[150px] w-[244px] object-cover"
-                                        src="/profile.jpg"
+                                        src={`${host}${selectedUser.identification.front}`}
                                         alt="Front"
+                                        width={70}
+                                        height={70}
                                       />
                                       <div>Front</div>
                                     </div>
                                     <div className="flex flex-col items-center justify-center gap-2">
-                                      <img
+                                      <Image
                                         className="rounded-lg bg-red-500 h-[150px] w-[244px] object-cover"
-                                        src="/profile.jpg"
+                                        src={`${host}${selectedUser.identification.back}`}
                                         alt="Back"
+                                        width={70}
+                                        height={70}
                                       />
                                       <div>Back</div>
                                     </div>
